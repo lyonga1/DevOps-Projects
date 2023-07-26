@@ -1,0 +1,31 @@
+# Maven Setup
+# 1) Update the system 2) Install Java 3) Download Maven packages 4) Extract it
+#5) Add path to bash_profile (Optional)
+
+
+---
+- hosts: jenkins-build-node
+  become: true
+  tasks:
+  - name: Update ubuntu repo and cache
+    apt: 
+      update_cache: yes
+      cache_valid_time: 3600
+    
+  - name: install java
+    apt: 
+      name: openjdk-17-jre
+      state: present  
+
+  - name: download maven packages 
+    get_url: 
+      url: https://dlcdn.apache.org/maven/maven-3/3.9.3/binaries/apache-maven-3.9.3-bin.tar.gz
+      dest: /opt
+
+  - name: extract maven packages
+    unarchive:
+      src: /opt/apache-maven-3.9.3-bin.tar.gz
+      dest: /opt
+      remote_src: yes
+
+
