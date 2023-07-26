@@ -1,0 +1,32 @@
+Install ansible
+Add inventory file
+Copy private key onto ansible
+Test Connection
+
+Step 1:  install ansible on Ubuntu 22.04 LTS
+sudo apt update
+sudo apt install software-properties-common -y
+sudo add-apt-repository --yes --update ppa:ansible/ansible
+sudo apt install ansible -y
+
+Step 2: Add inventory file 
+In this step, I am adding Jenkins-master and Worker-node to be managed by 
+Ansible by adding the private IPs address into the Invertory file
+# cd /opt
+# vim hosts
+# once you copy your pem fie to /opt, run chmod 400
+[jenkins-master]
+3.87.17.125
+[jenkins-master:vars]
+ansible_user=ubuntu
+ansible_ssh_key_file=/opt/key.pem
+[jenkins-build-node]
+54.243.8.242
+[jenkins-build-node:vars]
+ansible_user=ubuntu
+ansible_ssh_key_file=/opt/key.pem
+
+Step 3: Test connectivity
+run: ansible all -i hosts -m ping
+
+

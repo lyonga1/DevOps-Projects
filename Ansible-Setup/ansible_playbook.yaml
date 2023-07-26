@@ -1,0 +1,41 @@
+# To write a playbook in ansible, know the steps involved in manual installation
+#Ansible playbook to install Jenkins
+#Add the jenkins repo keys to system
+# Add repo to system
+# Install dependencies
+#Install Jenkins
+
+---
+- hosts: jenkins-master
+  become: true
+  tasks:
+  - add jenkins key
+    apt_key:
+      url: https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+      state: present
+  - name: add jenkins repo 
+    apt_repository:
+      repo: 'deb https://pkg.jenkins.io/debian-stable binary/'
+      state: present 
+
+  - name: install java
+    apt: 
+      name: openjdk-17-jre
+      state: present 
+  - name: install jenkins
+    apt: 
+      name: jenkins
+      state: present 
+  
+  - name: start jenkins services
+    service: 
+      name: jenkins
+      state: started
+  
+  - name: enable jenkins to start at boot time
+    service:
+      name: jenkins
+      enabled: yes
+
+  
+  
